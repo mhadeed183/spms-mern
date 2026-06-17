@@ -23,7 +23,21 @@ const allowedOrigins = [
   'https://spms-mern.vercel.app'
 ];
 
-app.use(cors({ origin: true, credentials: true }));
+
+  origin: function (origin, callback) {
+    // Allow requests with no origin (like Postman, mobile apps, or server-to-server health checks)
+    if (!origin) return callback(null, true);
+    
+    if (allowedOrigins.indexOf(origin) !== -1) {
+      callback(null, true);
+    } else {
+      callback(new Error('Not allowed by CORS'));
+    }
+  },
+  credentials: true,
+  methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
+  allowedHeaders: ['Content-Type', 'Authorization']
+}));
 
 app.use(express.json({ limit: '5mb' })); // 5mb to allow base64 profile images
 
