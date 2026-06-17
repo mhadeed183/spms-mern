@@ -20,7 +20,7 @@ const PORT = process.env.PORT || 5000;
 // This whitelist allows both your local testing setup and your deployed Vercel site
 const allowedOrigins = [
   'http://localhost:5173',
-  'https://spms-mern-es4nfruck-hadeed1.vercel.app'
+  'https://spms-mern.vercel.app'
 ];
 
 app.use(cors({
