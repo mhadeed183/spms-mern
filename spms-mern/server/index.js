@@ -1,21 +1,16 @@
 // index.js — Express + MongoDB server entry point
 
-// ── DNS Overrides (Forces Public DNS) ─────────────────────────────────────────
-const dns = require('dns');
-dns.setServers(['8.8.8.8', '8.8.4.4']); // Forces Node to use Google's Public DNS globally
-app.use(express.json());
-app.use(express.urlencoded({ extended: true }));
-
-require('dotenv').config();
+// ── Requires ───────────────────────────────────────────────────────────────────
+const dns      = require('dns');
+const dotenv   = require('dotenv');
 const express  = require('express');
 const mongoose = require('mongoose');
 const cors     = require('cors');
 
-app.use('/api/auth', authRoutes);
+// ── DNS Overrides (Forces Public DNS) ─────────────────────────────────────────
+dns.setServers(['8.8.8.8', '8.8.4.4']); // Forces Node to use Google's Public DNS globally
 
-const authRoutes     = require('./routes/auth');
-const taskRoutes     = require('./routes/tasks');
-const subjectRoutes  = require('./routes/subjects');
+dotenv.config();
 
 const app  = express();
 const PORT = process.env.PORT || 5000;
@@ -31,7 +26,7 @@ app.use(cors({
   origin: function (origin, callback) {
     // Allow requests with no origin (like Postman, mobile apps, or server-to-server health checks)
     if (!origin) return callback(null, true);
-    
+
     if (allowedOrigins.indexOf(origin) !== -1) {
       callback(null, true);
     } else {
@@ -44,8 +39,13 @@ app.use(cors({
 }));
 
 app.use(express.json({ limit: '5mb' })); // 5mb to allow base64 profile images
+app.use(express.urlencoded({ extended: true }));
 
 // ── Routes ────────────────────────────────────────────────────────────────────
+const authRoutes     = require('./routes/auth');
+const taskRoutes     = require('./routes/tasks');
+const subjectRoutes  = require('./routes/subjects');
+
 app.use('/api/auth',     authRoutes);
 app.use('/api/tasks',    taskRoutes);
 app.use('/api/subjects', subjectRoutes);
