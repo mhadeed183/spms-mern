@@ -12,7 +12,7 @@ const taskRoutes     = require('./routes/tasks');
 const subjectRoutes  = require('./routes/subjects');
 
 const app  = express();
-const PORT = process.env.PORT || 5000;
+const PORT = process.env.PORT || 8080; // Handles Railway's port dynamically
 
 // ── Middlewares ───────────────────────────────
 app.use(express.json({ limit: '5mb' }));
@@ -46,13 +46,14 @@ app.use('/api/subjects', subjectRoutes);
 // Health check
 app.get('/api/health', (_, res) => res.json({ status: 'ok' }));
 
-// ── MongoDB + Server ───────────────────────────
+// ── MongoDB Connection + Single Server Boot ────
 mongoose.connect(process.env.MONGO_URI)
   .then(() => {
     console.log('✅ MongoDB connected');
-    app.listen(PORT, () =>
-      console.log(`🚀 Server running on port ${PORT}`)
-    );
+    // ONLY listen here, and explicitly use '0.0.0.0' so Railway can route traffic!
+    app.listen(PORT, '0.0.0.0', () => {
+      console.log(`🚀 Server securely running on port ${PORT}`);
+    });
   })
   .catch(err => {
     console.error('❌ MongoDB connection error:', err.message);
