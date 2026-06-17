@@ -2,6 +2,6 @@
   "name": "spms-root",
   "version": "1.0.0",
   "scripts": {
-    "start": "npm start --prefix spms-mern"
+    "start": "npm start --prefix spms-mern/server"
   }
 }
