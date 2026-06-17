@@ -4,7 +4,7 @@
 
 import axios from 'axios';
 
-const api = axios.create({ baseURL: 'spms-mern-development.up.railway.app' });
+const api = axios.create({ baseURL: 'https://spms-mern-development.up.railway.app/' });
 
 // Before every request, check localStorage for a token and attach it.
 api.interceptors.request.use((config) => {
