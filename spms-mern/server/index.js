@@ -3,11 +3,15 @@
 // ── DNS Overrides (Forces Public DNS) ─────────────────────────────────────────
 const dns = require('dns');
 dns.setServers(['8.8.8.8', '8.8.4.4']); // Forces Node to use Google's Public DNS globally
+app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
 
 require('dotenv').config();
 const express  = require('express');
 const mongoose = require('mongoose');
 const cors     = require('cors');
+
+app.use('/api/auth', authRoutes);
 
 const authRoutes     = require('./routes/auth');
 const taskRoutes     = require('./routes/tasks');
