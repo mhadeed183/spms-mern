@@ -23,7 +23,7 @@ const allowedOrigins = [
   'https://spms-mern.vercel.app'
 ];
 
-
+app.use(cors({
   origin: function (origin, callback) {
     // Allow requests with no origin (like Postman, mobile apps, or server-to-server health checks)
     if (!origin) return callback(null, true);
